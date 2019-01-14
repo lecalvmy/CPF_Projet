@@ -15,7 +15,6 @@ using namespace std;
 int main(int argc, char **argv)
 {
     clock_t t1, t2, t3, t4;
-    t1=clock();
     double fdStep = 0.1;
     double T, r, strike, correlation;
     PnlVect *spot, *sigma, *divid, *payoff_coef;
@@ -74,25 +73,38 @@ int main(int argc, char **argv)
         opt = new PerformanceOption(T, timestep, size, payoff_coef);
     }
 
-
     PnlRng *rng= pnl_rng_create(PNL_RNG_MERSENNE);
-
-    //
-    pnl_rng_init(rng, PNL_RNG_MERSENNE);
-    pnl_rng_sseed(rng, time(NULL));
 
 
     MonteCarlo *mCarlo = new MonteCarlo(bsmodel, opt, rng, fdStep, n_samples);
     double prix = 0.0;
     double ic = 0.0;
+    t1 = clock();
     mCarlo->price(prix , ic);
-    printf("============== \nPrix: %f \nIc: %f \n", prix, ic);
     t2 = clock();
+    printf("============== \nPrix: %f \nIc: %f \n", prix, ic);
     float diff ((float)t2-(float)t1);
     float seconds = diff / CLOCKS_PER_SEC;
     printf("%f sec\n==============\n", seconds);
 
-    PnlMat *past = pnl_mat_create_from_scalar(1, size, 100);
+
+
+    int size_th, rank;
+    MPI_Init (&argc, &argv);
+    MPI_Comm_size (MPI_COMM_WORLD, &size_th);
+    MPI_Comm_rank (MPI_COMM_WORLD, &rank);
+
+    double prix_para = 0.0;
+    double ic_para = 0.0;
+    t3 = clock();
+    mCarlo->price(prix_para , ic_para, size_th, rank);
+    t4 = clock();
+    printf("============== \nPrix: %f \nIc: %f \n", prix, ic);
+    float diff2 ((float)t4-(float)t3);
+    seconds = diff2 / CLOCKS_PER_SEC;
+    printf("%f sec\n==============\n", seconds);
+
+    //PnlMat *past = pnl_mat_create_from_scalar(1, size, 100);
     //PnlVect *delta = pnl_vect_create(size);
     //PnlVect *conf_delta = pnl_vect_create(size);
 

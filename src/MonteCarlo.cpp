@@ -1,5 +1,5 @@
 ﻿#include "MonteCarlo.hpp"
-
+#include <time.h>
 using namespace std;
 
 /**
@@ -23,11 +23,15 @@ MonteCarlo::MonteCarlo(Model *mod, Option *opt, PnlRng *rng, double fdStep, int 
 	* @param[out] prix valeur de l'estimateur Monte Carlo
 	* @param[out] ic largeur de l'intervalle de confiance
 */
+
 void MonteCarlo::price(double &prix, double &ic) {
 
 	double payoff;
 	prix = 0;
 	double esp_carre = 0;
+
+	pnl_rng_init(rng_, PNL_RNG_MERSENNE);
+    pnl_rng_sseed(rng_, time(NULL));
 
 	PnlMat *path = pnl_mat_create(opt_->nbTimeSteps_ + 1, mod_->size_);
 	pnl_mat_set_row(path, mod_->spot_, 0);
@@ -42,6 +46,14 @@ void MonteCarlo::price(double &prix, double &ic) {
 	ic = 1.96 * sqrt(estimateur_carre / nbSamples_);
 
 	pnl_mat_free(&path);
+}
+
+void MonteCarlo::price(double &prix, double &ic, int size, int rank){
+	double payoff;
+	prix = 0;
+	double esp_carre = 0;
+	price_master();
+	price_slave();
 }
 
 /**
