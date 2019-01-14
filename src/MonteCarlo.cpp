@@ -52,10 +52,16 @@ void MonteCarlo::price(double &prix, double &ic, int size, int rank){
 	double payoff;
 	prix = 0;
 	double esp_carre = 0;
-	price_master();
-	price_slave();
+	price_master(prix, ic, size, rank);
+	price_slave(prix, ic, size, rank);
 }
 
+void MonteCarlo::price_slave(double &prix, double &ic, int size, int rank){
+
+}
+
+void MonteCarlo::price_master(double &prix, double &ic, int size, int rank){
+}
 /**
  * Calcule le prix de l'option à la date t
  *

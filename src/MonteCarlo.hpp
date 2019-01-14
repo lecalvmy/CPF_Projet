@@ -48,6 +48,11 @@ public:
 	 */
 	void price(double &prix, double &ic, int size, int rank);
 
+	void price_master(double &prix, double &ic, int size, int rank);
+
+	void price_slave(double &prix, double &ic, int size, int rank);
+
+
 	/**
 	 * Calcule le prix de l'option à la date t
 	 *

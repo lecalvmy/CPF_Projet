@@ -8,6 +8,8 @@
 #include "CallOption.hpp"
 #include "PerformanceOption.hpp"
 #include <time.h>
+#include "mpi.h"
+
 
 
 using namespace std;
@@ -103,6 +105,9 @@ int main(int argc, char **argv)
     float diff2 ((float)t4-(float)t3);
     seconds = diff2 / CLOCKS_PER_SEC;
     printf("%f sec\n==============\n", seconds);
+
+    MPI_Finalize ();
+
 
     //PnlMat *past = pnl_mat_create_from_scalar(1, size, 100);
     //PnlVect *delta = pnl_vect_create(size);
