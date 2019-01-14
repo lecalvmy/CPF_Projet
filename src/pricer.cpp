@@ -96,7 +96,8 @@ int main(int argc, char **argv)
     MPI_Init (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &size_th);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-
+    printf("rank : %i\n", rank);
+    printf("size : %i\n", size_th);
     double prix_para = 0.0;
     double ic_para = 0.0;
     t3 = clock();

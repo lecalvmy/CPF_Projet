@@ -34,6 +34,9 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     add_definitions(-DPNL_RANGE_CHECK_OFF)
 endif()
 
+#utiliser mpi 
+add_definitions(-DOMPI_SKIP_MPICXX)
+
 # Add math lib
 set(LIBS ${LIBS} m)
 
