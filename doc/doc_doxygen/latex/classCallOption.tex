@@ -1,0 +1,96 @@
+\hypertarget{classCallOption}{\section{Call\-Option Class Reference}
+\label{classCallOption}\index{Call\-Option@{Call\-Option}}
+}
+
+
+\hyperlink{classOption}{Option} Call hérite de la classe abstraite option.  
+
+
+
+
+{\ttfamily \#include $<$Call\-Option.\-hpp$>$}
+
+Inheritance diagram for Call\-Option\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCallOption}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCallOption_a6a7af19aa666f2a24318dda2c232654c}{Call\-Option} (double T, int nb\-Time\-Steps, int size, Pnl\-Vect $\ast$weights, double strike)
+\item 
+double \hyperlink{classCallOption_add068157dca472105aede4a613970dfc}{payoff} (const Pnl\-Mat $\ast$path) override
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{classCallOption_a5158e7f6be0b959b51e2e92172a49ebf}{strike\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classOption}{Option} Call hérite de la classe abstraite option. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCallOption_a6a7af19aa666f2a24318dda2c232654c}{\index{Call\-Option@{Call\-Option}!Call\-Option@{Call\-Option}}
+\index{Call\-Option@{Call\-Option}!CallOption@{Call\-Option}}
+\subsubsection[{Call\-Option}]{\setlength{\rightskip}{0pt plus 5cm}Call\-Option\-::\-Call\-Option (
+\begin{DoxyParamCaption}
+\item[{double}]{T, }
+\item[{int}]{nb\-Time\-Steps, }
+\item[{int}]{size, }
+\item[{Pnl\-Vect $\ast$}]{weights, }
+\item[{double}]{strike}
+\end{DoxyParamCaption}
+)}}\label{classCallOption_a6a7af19aa666f2a24318dda2c232654c}
+Constructeur de la classe 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em T} & \-: maturité \\
+\hline
+\mbox{\tt in}  & {\em nb\-Time\-Steps} & \-: nombre de pas de temps de discrétisation \\
+\hline
+\mbox{\tt in}  & {\em size} & \-: dimension du modèle \\
+\hline
+\mbox{\tt in}  & {\em weights} & \-: poids des actifs \\
+\hline
+\mbox{\tt in}  & {\em strike} & \-: prix d'exercice de l'option \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classCallOption_add068157dca472105aede4a613970dfc}{\index{Call\-Option@{Call\-Option}!payoff@{payoff}}
+\index{payoff@{payoff}!CallOption@{Call\-Option}}
+\subsubsection[{payoff}]{\setlength{\rightskip}{0pt plus 5cm}double Call\-Option\-::payoff (
+\begin{DoxyParamCaption}
+\item[{const Pnl\-Mat $\ast$}]{path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classCallOption_add068157dca472105aede4a613970dfc}
+Calcule la valeur du payoff sur la trajectoire
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em path} & est une matrice de taille (N+1) x d contenant une trajectoire du modèle telle que créée par la fonction asset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+phi(trajectoire) 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classOption_abe90882a11f5436077425249e3f32204}{Option}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classCallOption_a5158e7f6be0b959b51e2e92172a49ebf}{\index{Call\-Option@{Call\-Option}!strike\-\_\-@{strike\-\_\-}}
+\index{strike\-\_\-@{strike\-\_\-}!CallOption@{Call\-Option}}
+\subsubsection[{strike\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Call\-Option\-::strike\-\_\-}}\label{classCallOption_a5158e7f6be0b959b51e2e92172a49ebf}
+Prix d'exercice de l'option Call 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Call\-Option.\-hpp\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Call\-Option.\-cpp\end{DoxyCompactItemize}

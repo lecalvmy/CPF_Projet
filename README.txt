@@ -1,0 +1,1 @@
+cmake3 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_PREFIX_PATH=/matieres/5MMPMP6/pnl ..

@@ -1,0 +1,81 @@
+\hypertarget{classOption}{\section{Option Class Reference}
+\label{classOption}\index{Option@{Option}}
+}
+
+
+Classe \hyperlink{classOption}{Option} abstraite.  
+
+
+
+
+{\ttfamily \#include $<$Option.\-hpp$>$}
+
+Inheritance diagram for Option\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classOption}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual double \hyperlink{classOption_abe90882a11f5436077425249e3f32204}{payoff} (const Pnl\-Mat $\ast$path)=0
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{classOption_a89f0365b68626cc5eb523f12159e0764}{T\-\_\-}
+\item 
+int \hyperlink{classOption_ad424223ea2698144e823c494d625fbe0}{nb\-Time\-Steps\-\_\-}
+\item 
+int \hyperlink{classOption_a65fae5103b50f953f29a86b1a17b4540}{size\-\_\-}
+\item 
+Pnl\-Vect $\ast$ \hyperlink{classOption_a8f5978de54bbccdc3af36f30eaae1fdb}{weights\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classe \hyperlink{classOption}{Option} abstraite. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classOption_abe90882a11f5436077425249e3f32204}{\index{Option@{Option}!payoff@{payoff}}
+\index{payoff@{payoff}!Option@{Option}}
+\subsubsection[{payoff}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Option\-::payoff (
+\begin{DoxyParamCaption}
+\item[{const Pnl\-Mat $\ast$}]{path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classOption_abe90882a11f5436077425249e3f32204}
+Calcule la valeur du payoff sur la trajectoire
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em path} & est une matrice de taille (N+1) x d contenant une trajectoire du modèle telle que créée par la fonction asset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+phi(trajectoire) 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classBasketOption_a57c941403d2bd21159b090fa6481ee9e}{Basket\-Option}, \hyperlink{classAsianOption_a0ac88380a30a7c0ef6a5c5159d15fa76}{Asian\-Option}, \hyperlink{classCallOption_add068157dca472105aede4a613970dfc}{Call\-Option}, and \hyperlink{classPerformanceOption_ad1effaaa7b93de07b5add0805c070bc7}{Performance\-Option}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classOption_ad424223ea2698144e823c494d625fbe0}{\index{Option@{Option}!nb\-Time\-Steps\-\_\-@{nb\-Time\-Steps\-\_\-}}
+\index{nb\-Time\-Steps\-\_\-@{nb\-Time\-Steps\-\_\-}!Option@{Option}}
+\subsubsection[{nb\-Time\-Steps\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int Option\-::nb\-Time\-Steps\-\_\-}}\label{classOption_ad424223ea2698144e823c494d625fbe0}
+nombre de pas de temps de discrétisation \hypertarget{classOption_a65fae5103b50f953f29a86b1a17b4540}{\index{Option@{Option}!size\-\_\-@{size\-\_\-}}
+\index{size\-\_\-@{size\-\_\-}!Option@{Option}}
+\subsubsection[{size\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int Option\-::size\-\_\-}}\label{classOption_a65fae5103b50f953f29a86b1a17b4540}
+dimension du modèle, redondant avec \hyperlink{classModel_a6ed92821c257183f9761238c391ae3c4}{Black\-Scholes\-Model\-::size\-\_\-} \hypertarget{classOption_a89f0365b68626cc5eb523f12159e0764}{\index{Option@{Option}!T\-\_\-@{T\-\_\-}}
+\index{T\-\_\-@{T\-\_\-}!Option@{Option}}
+\subsubsection[{T\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Option\-::\-T\-\_\-}}\label{classOption_a89f0365b68626cc5eb523f12159e0764}
+maturité de l'option \hypertarget{classOption_a8f5978de54bbccdc3af36f30eaae1fdb}{\index{Option@{Option}!weights\-\_\-@{weights\-\_\-}}
+\index{weights\-\_\-@{weights\-\_\-}!Option@{Option}}
+\subsubsection[{weights\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}Pnl\-Vect$\ast$ Option\-::weights\-\_\-}}\label{classOption_a8f5978de54bbccdc3af36f30eaae1fdb}
+poids des sous-\/jacents 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Option.\-hpp\end{DoxyCompactItemize}

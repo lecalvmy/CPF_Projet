@@ -1,0 +1,83 @@
+\hypertarget{classPerformanceOption}{\section{Performance\-Option Class Reference}
+\label{classPerformanceOption}\index{Performance\-Option@{Performance\-Option}}
+}
+
+
+\hyperlink{classOption}{Option} Performance hérite de la classe abstraite option.  
+
+
+
+
+{\ttfamily \#include $<$Performance\-Option.\-hpp$>$}
+
+Inheritance diagram for Performance\-Option\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classPerformanceOption}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classPerformanceOption_a2bee53d8bcc5cf42fbe9c1144985eea1}{Performance\-Option} (double T, int nb\-Time\-Steps, int size, Pnl\-Vect $\ast$weights)
+\item 
+double \hyperlink{classPerformanceOption_ad1effaaa7b93de07b5add0805c070bc7}{payoff} (const Pnl\-Mat $\ast$path) override
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\hyperlink{classOption}{Option} Performance hérite de la classe abstraite option. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classPerformanceOption_a2bee53d8bcc5cf42fbe9c1144985eea1}{\index{Performance\-Option@{Performance\-Option}!Performance\-Option@{Performance\-Option}}
+\index{Performance\-Option@{Performance\-Option}!PerformanceOption@{Performance\-Option}}
+\subsubsection[{Performance\-Option}]{\setlength{\rightskip}{0pt plus 5cm}Performance\-Option\-::\-Performance\-Option (
+\begin{DoxyParamCaption}
+\item[{double}]{T, }
+\item[{int}]{nb\-Time\-Steps, }
+\item[{int}]{size, }
+\item[{Pnl\-Vect $\ast$}]{weights}
+\end{DoxyParamCaption}
+)}}\label{classPerformanceOption_a2bee53d8bcc5cf42fbe9c1144985eea1}
+Constructeur de la classe 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em T} & \-: maturité \\
+\hline
+\mbox{\tt in}  & {\em nb\-Time\-Steps} & \-: nombre de pas de temps de discrétisation \\
+\hline
+\mbox{\tt in}  & {\em size} & \-: dimension du modèle \\
+\hline
+\mbox{\tt in}  & {\em weights} & \-: poids des actifs \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classPerformanceOption_ad1effaaa7b93de07b5add0805c070bc7}{\index{Performance\-Option@{Performance\-Option}!payoff@{payoff}}
+\index{payoff@{payoff}!PerformanceOption@{Performance\-Option}}
+\subsubsection[{payoff}]{\setlength{\rightskip}{0pt plus 5cm}double Performance\-Option\-::payoff (
+\begin{DoxyParamCaption}
+\item[{const Pnl\-Mat $\ast$}]{path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classPerformanceOption_ad1effaaa7b93de07b5add0805c070bc7}
+Calcule la valeur du payoff sur la trajectoire
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em path} & est une matrice de taille (N+1) x d contenant une trajectoire du modèle telle que créée par la fonction asset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+phi(trajectoire) 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classOption_abe90882a11f5436077425249e3f32204}{Option}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Performance\-Option.\-hpp\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Performance\-Option.\-cpp\end{DoxyCompactItemize}

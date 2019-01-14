@@ -1,0 +1,167 @@
+\hypertarget{classModel}{\section{Model Class Reference}
+\label{classModel}\index{Model@{Model}}
+}
+
+
+Classe \hyperlink{classModel}{Model} abstraite.  
+
+
+
+
+{\ttfamily \#include $<$Model.\-hpp$>$}
+
+Inheritance diagram for Model\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classModel}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classModel_a1ccd299588c37fdf8f83b2f177e8f9bf}{asset} (Pnl\-Mat $\ast$path, double T, int nb\-Time\-Steps, Pnl\-Rng $\ast$rng)=0
+\item 
+virtual void \hyperlink{classModel_ab6471a33c4199df3231c0b1303996a48}{asset} (Pnl\-Mat $\ast$path, double t, double T, int nb\-Time\-Steps, Pnl\-Rng $\ast$rng, const Pnl\-Mat $\ast$past)=0
+\item 
+virtual void \hyperlink{classModel_ac3f9c384e5cf55f413b275a5051fef5c}{shift\-Asset} (Pnl\-Mat $\ast$shift\-\_\-path, const Pnl\-Mat $\ast$path, int d, double h, double t, double timestep)=0
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classModel_a6ed92821c257183f9761238c391ae3c4}{size\-\_\-}
+\item 
+double \hyperlink{classModel_a1f5f3f86eee1cd9229c82d964b61f995}{r\-\_\-}
+\item 
+double \hyperlink{classModel_ab9acbd36b86506a8a884f98fcdb91a85}{rho\-\_\-}
+\item 
+Pnl\-Vect $\ast$ \hyperlink{classModel_a263fff634205dc864729e86152f92be3}{sigma\-\_\-}
+\item 
+Pnl\-Vect $\ast$ \hyperlink{classModel_a3a5e93094a3234a1c408f64952e8dbed}{spot\-\_\-}
+\item 
+Pnl\-Vect $\ast$ \hyperlink{classModel_ac487a27995c0b5ebf566fb7c032cb0ab}{trend\-\_\-}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classe \hyperlink{classModel}{Model} abstraite. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classModel_a1ccd299588c37fdf8f83b2f177e8f9bf}{\index{Model@{Model}!asset@{asset}}
+\index{asset@{asset}!Model@{Model}}
+\subsubsection[{asset}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Model\-::asset (
+\begin{DoxyParamCaption}
+\item[{Pnl\-Mat $\ast$}]{path, }
+\item[{double}]{T, }
+\item[{int}]{nb\-Time\-Steps, }
+\item[{Pnl\-Rng $\ast$}]{rng}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classModel_a1ccd299588c37fdf8f83b2f177e8f9bf}
+Génère une trajectoire du modèle et la stocke dans path
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em path} & contient une trajectoire du modèle. C'est une matrice de taille (nb\-Time\-Steps+1) x d \\
+\hline
+\mbox{\tt in}  & {\em T} & maturité \\
+\hline
+\mbox{\tt in}  & {\em rng} & generateur de nombres aleatoires \\
+\hline
+\mbox{\tt in}  & {\em nb\-Time\-Steps} & nombre de dates de constatation \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classBlackScholesModel_a5c35ad270631947ce5d76f43bc62b544}{Black\-Scholes\-Model}.
+
+\hypertarget{classModel_ab6471a33c4199df3231c0b1303996a48}{\index{Model@{Model}!asset@{asset}}
+\index{asset@{asset}!Model@{Model}}
+\subsubsection[{asset}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Model\-::asset (
+\begin{DoxyParamCaption}
+\item[{Pnl\-Mat $\ast$}]{path, }
+\item[{double}]{t, }
+\item[{double}]{T, }
+\item[{int}]{nb\-Time\-Steps, }
+\item[{Pnl\-Rng $\ast$}]{rng, }
+\item[{const Pnl\-Mat $\ast$}]{past}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classModel_ab6471a33c4199df3231c0b1303996a48}
+Calcule une trajectoire du sous-\/jacent connaissant le passé jusqu' à la date t
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em path} & contient une trajectoire du sous-\/jacent donnée jusqu'à l'instant t par la matrice past \\
+\hline
+\mbox{\tt in}  & {\em t} & date jusqu'à laquelle on connait la trajectoire. t n'est pas forcément une date de discrétisation \\
+\hline
+\mbox{\tt in}  & {\em nb\-Time\-Steps} & nombre de pas de constatation \\
+\hline
+\mbox{\tt in}  & {\em T} & date jusqu'à laquelle on simule la trajectoire \\
+\hline
+\mbox{\tt in}  & {\em rng} & generateur de nombres aleatoires \\
+\hline
+\mbox{\tt in}  & {\em past} & trajectoire réalisée jusqu'a la date t \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classBlackScholesModel_a140472ccf827b6244a56a0a34e2def57}{Black\-Scholes\-Model}.
+
+\hypertarget{classModel_ac3f9c384e5cf55f413b275a5051fef5c}{\index{Model@{Model}!shift\-Asset@{shift\-Asset}}
+\index{shift\-Asset@{shift\-Asset}!Model@{Model}}
+\subsubsection[{shift\-Asset}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Model\-::shift\-Asset (
+\begin{DoxyParamCaption}
+\item[{Pnl\-Mat $\ast$}]{shift\-\_\-path, }
+\item[{const Pnl\-Mat $\ast$}]{path, }
+\item[{int}]{d, }
+\item[{double}]{h, }
+\item[{double}]{t, }
+\item[{double}]{timestep}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classModel_ac3f9c384e5cf55f413b275a5051fef5c}
+Shift d'une trajectoire du sous-\/jacent
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em path} & contient en input la trajectoire du sous-\/jacent \\
+\hline
+\mbox{\tt out}  & {\em shift\-\_\-path} & contient la trajectoire path dont la composante d a été shiftée par (1+h) à partir de la date t. \\
+\hline
+\mbox{\tt in}  & {\em t} & date à partir de laquelle on shift \\
+\hline
+\mbox{\tt in}  & {\em h} & pas de différences finies \\
+\hline
+\mbox{\tt in}  & {\em d} & indice du sous-\/jacent à shifter \\
+\hline
+\mbox{\tt in}  & {\em timestep} & pas de constatation du sous-\/jacent \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classBlackScholesModel_a3ea2cb722b330f1d52677dc229630c75}{Black\-Scholes\-Model}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classModel_a1f5f3f86eee1cd9229c82d964b61f995}{\index{Model@{Model}!r\-\_\-@{r\-\_\-}}
+\index{r\-\_\-@{r\-\_\-}!Model@{Model}}
+\subsubsection[{r\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Model\-::r\-\_\-}}\label{classModel_a1f5f3f86eee1cd9229c82d964b61f995}
+taux d'intérêt \hypertarget{classModel_ab9acbd36b86506a8a884f98fcdb91a85}{\index{Model@{Model}!rho\-\_\-@{rho\-\_\-}}
+\index{rho\-\_\-@{rho\-\_\-}!Model@{Model}}
+\subsubsection[{rho\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double Model\-::rho\-\_\-}}\label{classModel_ab9acbd36b86506a8a884f98fcdb91a85}
+paramètre de corrélation \hypertarget{classModel_a263fff634205dc864729e86152f92be3}{\index{Model@{Model}!sigma\-\_\-@{sigma\-\_\-}}
+\index{sigma\-\_\-@{sigma\-\_\-}!Model@{Model}}
+\subsubsection[{sigma\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}Pnl\-Vect$\ast$ Model\-::sigma\-\_\-}}\label{classModel_a263fff634205dc864729e86152f92be3}
+vecteur de volatilités \hypertarget{classModel_a6ed92821c257183f9761238c391ae3c4}{\index{Model@{Model}!size\-\_\-@{size\-\_\-}}
+\index{size\-\_\-@{size\-\_\-}!Model@{Model}}
+\subsubsection[{size\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}int Model\-::size\-\_\-}}\label{classModel_a6ed92821c257183f9761238c391ae3c4}
+nombre d'actifs du modèle \hypertarget{classModel_a3a5e93094a3234a1c408f64952e8dbed}{\index{Model@{Model}!spot\-\_\-@{spot\-\_\-}}
+\index{spot\-\_\-@{spot\-\_\-}!Model@{Model}}
+\subsubsection[{spot\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}Pnl\-Vect$\ast$ Model\-::spot\-\_\-}}\label{classModel_a3a5e93094a3234a1c408f64952e8dbed}
+valeurs initiales des sous-\/jacents \hypertarget{classModel_ac487a27995c0b5ebf566fb7c032cb0ab}{\index{Model@{Model}!trend\-\_\-@{trend\-\_\-}}
+\index{trend\-\_\-@{trend\-\_\-}!Model@{Model}}
+\subsubsection[{trend\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}Pnl\-Vect$\ast$ Model\-::trend\-\_\-}}\label{classModel_ac487a27995c0b5ebf566fb7c032cb0ab}
+vecteur des tendances 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+/user/8/.\-base/lecalvmy/home/3\-A/\-C\-P\-F\-\_\-\-Projet/\-Equipe\-\_\-1/src/Model.\-hpp\end{DoxyCompactItemize}
