@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "jlparser/parser.hpp"
+#include "Model.hpp"
 #include "BlackScholesModel.hpp"
 #include "MonteCarlo.hpp"
 #include "AsianOption.hpp"
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
     P->extract("volatility", sigma, size);
     P->extract("interest rate", r);
     if (P->extract("dividend rate", divid, size, true) == false)
-    {
+    {BlackScholesModel
         divid = pnl_vect_create_from_zero(size);
     }
     if (type != "performance"){
@@ -66,7 +67,7 @@ int main(int argc, char **argv)
 
     Option* opt;
 
-    BlackScholesModel *bsmodel = new BlackScholesModel(size, r, correlation, sigma, spot, trend);
+    Model *bsmodel = new BlackScholesModel(size, r, correlation, sigma, spot, trend);
     if (type == "asian"){
         opt = new AsianOption(T, timestep, size, payoff_coef, strike);
     } else if ( type == "basket"){
@@ -101,7 +102,7 @@ int main(int argc, char **argv)
     t3 = clock();
     mCarlo->price(prix_para , ic_para, size_th, rank);
     t4 = clock();
-    printf("============== \nPrix: %f \nIc: %f \n", prix, ic);
+    printf("============== \nPrix: %f \nIc: %f \n", prix_para, ic_para);
     float diff2 ((float)t4-(float)t3);
     seconds = diff2 / CLOCKS_PER_SEC;
     printf("%f sec\n==============\n", seconds);
