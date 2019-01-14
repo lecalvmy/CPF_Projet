@@ -68,7 +68,7 @@ else()
     message(STATUS "C++ Flags: ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_LINKER_EXE_FLAGS}" )
 endif()
 
-
+#commentaire
 # Télécharge googletest au moment de la configureation
 configure_file(CMakeLists.txt.in
         googletest-download/CMakeLists.txt)
