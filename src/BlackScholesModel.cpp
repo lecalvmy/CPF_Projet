@@ -52,7 +52,7 @@ void BlackScholesModel::asset(PnlMat *path, double T, int nbTimeSteps, PnlRng *r
 
 		pnl_mat_get_row(Ld, L, d);
 		sigma = pnl_vect_get(sigma_, d);
-		expo_t = exp((r_ - pow(sigma, 2) / 2) * step);
+		expo_t = exp((r_ - (sigma*sigma) / 2) * step);
 		Wt = sigma * sqrt_step;
 
 		for (int i = 1; i < nbTimeSteps + 1; i++) {
