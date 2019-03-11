@@ -48,9 +48,9 @@ public:
 	 */
 	void price(double &prix, double &ic, int size, int rank);
 
-	void price_master(double &prix, double &ic, int size, int rank);
+	void price_master(double &prix, double &ic, int size, int rank, double recvprice[], double recvesp[], double recvniter[]);
 
-	void price_slave(double &prix, double &ic, int size, int rank);
+	void price_slave(double &prix, double &ic, int size, int rank, double &payoff, double &esp_carre, PnlMat *path);
 
 
 	/**

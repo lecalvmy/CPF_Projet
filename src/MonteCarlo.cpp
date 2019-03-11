@@ -1,5 +1,6 @@
 ﻿#include "MonteCarlo.hpp"
 #include <time.h>
+#include "mpi.h"
 using namespace std;
 
 /**
@@ -49,18 +50,74 @@ void MonteCarlo::price(double &prix, double &ic) {
 }
 
 void MonteCarlo::price(double &prix, double &ic, int size, int rank){
+
 	double payoff;
 	prix = 0;
 	double esp_carre = 0;
-	price_master(prix, ic, size, rank);
-	price_slave(prix, ic, size, rank);
+
+	double recvprice[rank];
+	double recvesp[rank];
+	long recvniter[rank];
+
+	PnlRng *rng = pnl_rng_dcmt_create_id(rank, 1234);
+	pnl_rng_sseed(rng, 0);
+
+	PnlMat *path = pnl_mat_create(opt_->nbTimeSteps_ + 1, mod_->size_);
+	pnl_mat_set_row(path, mod_->spot_, 0);
+
+	if(size != 0)
+	    {
+			price_slave(prix, ic, size, rank, payoff, esp_carre, path);
+
+	    }
+	    else if (size == 0)
+	    {
+	        price_master(prix, ic, size, rank, recvprice[], recvesp[], recvniter[]);
+	    }
+
+	    if (size == 0)                      //if root process
+	    {
+			double finalPrice = 0;
+			double finalEspCarre = 0;
+	        long finalNbSamples = 0;
+	        for(int i = 0; i<rank; ++i)
+	        {
+	            finalPrice += recvprice[i];
+				finalEspCarre += recvesp[i];
+	            finalNbSamples += recvniter[i];
+	        }
+			double estimateur_carre = exp(-2 * mod_->r_*opt_->T_)*(finalEspCarre / finalNbSamples - (finalPrice/finalNbSamples)*(finalPrice/finalNbSamples));
+			finalPrice *= exp(-mod_->r_*opt_->T_) / finalNbSamples;
+			finalEspCarre = 1.96 * sqrt(estimateur_carre / finalNbSamples);
+			prix = finalPrice;
+			ic = finalEspCarre;
+	    }
+	pnl_rng_free(&rng);
+	pnl_mat_free(&path);
 }
 
-void MonteCarlo::price_slave(double &prix, double &ic, int size, int rank){
-
+void MonteCarlo::price_slave(double &prix, double &ic, int size, int rank, double &payoff, double &esp_carre, PnlMat *path){
+	for (int j = 0; j < nbSamples_; ++j) {
+		mod_->asset(path, opt_->T_, opt_->nbTimeSteps_, rng_);
+		payoff = opt_->payoff(path);
+		prix += payoff;
+		esp_carre += (payoff * payoff);
+	}
+	for(int i=0; i<rank; ++i)
+        {
+            MPI_Send(&prix,1,MPI_INT,0,1,MPI_COMM_WORLD);
+			MPI_Send(&esp_carre,1,MPI_INT,0,1,MPI_COMM_WORLD);
+            MPI_Send(&niter,1,MPI_LONG,0,2,MPI_COMM_WORLD);
+        }
 }
 
-void MonteCarlo::price_master(double &prix, double &ic, int size, int rank){
+void MonteCarlo::price_master(double &prix, double &ic, int size, int rank, double[] recvprice, double[] recvesp, double[] recvniter){
+	for(int i=0; i<rank; ++i)
+        {
+            MPI_Recv(&recvprice[i],rank,MPI_INT,MPI_ANY_SOURCE, 1,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			MPI_Recv(&recvesp[i],rank,MPI_INT,MPI_ANY_SOURCE, 2,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&recvniter[i],rank,MPI_LONG,MPI_ANY_SOURCE,3,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+        }
 }
 /**
  * Calcule le prix de l'option à la date t
