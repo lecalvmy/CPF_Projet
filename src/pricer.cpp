@@ -17,7 +17,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    clock_t t1, t2, t3, t4;
+    clock_t t1, t2;
+    double t3, t4;
     double fdStep = 0.1;
     double T, r, strike, correlation;
     PnlVect *spot, *sigma, *divid, *payoff_coef;
@@ -25,14 +26,18 @@ int main(int argc, char **argv)
     int size, timestep;
     //int hedging_dates_number;
     int optionc = 0;
+    double precision = 0;
 
     size_t n_samples;
     char *infile, *market_file;
-    if (argc >= 5 || argc == 3){
+    if (argc >= 5){
         throw std::invalid_argument( "Invalid number of arguments for function" );
     } else if (argc == 2){
         infile = argv[1];
-    } else if (argc == 4){
+    } else if (argc == 3) {
+        infile = argv[1];
+        precision = atof(argv[2]);
+    }else if (argc == 4){
         if (strcmp(argv[1], "-c") != 0){
             throw std::invalid_argument( "Option not implemented for function" );
         } else {
@@ -80,6 +85,8 @@ int main(int argc, char **argv)
 
 
     MonteCarlo *mCarlo = new MonteCarlo(bsmodel, opt, rng, fdStep, n_samples);
+
+/*
     double prix = 0.0;
     double ic = 0.0;
     t1 = clock();
@@ -90,25 +97,51 @@ int main(int argc, char **argv)
     float seconds = diff / CLOCKS_PER_SEC;
     printf("%f sec\n==============\n", seconds);
 
+*/
 
+    if (argc == 2) {
+        int size_th, rank;
+        MPI_Init (&argc, &argv);
+        MPI_Comm_size (MPI_COMM_WORLD, &size_th);
+        MPI_Comm_rank (MPI_COMM_WORLD, &rank);
+        /*
+        printf("rank : %i\n", rank);
+        printf("size : %i\n", size_th);
+        */
+        double prix_para = 0.0;
+        double ic_para = 0.0;
+        t3 = MPI_Wtime();
+        mCarlo->price(prix_para , ic_para, size_th, rank);
+        t4 = MPI_Wtime();
+        if (rank == 0) {
+            printf("============== \nPrix mpi: %f \nIc mpi: %f \n ",  prix_para, ic_para);
+            printf("%f sec\n==============\n", t4-t3);
+        }
+        MPI_Finalize ();
+    }
 
-    int size_th, rank;
-    MPI_Init (&argc, &argv);
-    MPI_Comm_size (MPI_COMM_WORLD, &size_th);
-    MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-    printf("rank : %i\n", rank);
-    printf("size : %i\n", size_th);
-    double prix_para = 0.0;
-    double ic_para = 0.0;
-    t3 = clock();
-    mCarlo->price(prix_para , ic_para, size_th, rank);
-    t4 = clock();
-    printf("============== \nPrix: %f \nIc: %f \n", prix_para, ic_para);
-    float diff2 ((float)t4-(float)t3);
-    seconds = diff2 / CLOCKS_PER_SEC;
-    printf("%f sec\n==============\n", seconds);
+    else if (argc == 3) {
+        printf("precision : %f\n", precision);
+        int size_th, rank;
+        MPI_Init (&argc, &argv);
+        MPI_Comm_size (MPI_COMM_WORLD, &size_th);
+        MPI_Comm_rank (MPI_COMM_WORLD, &rank);
+        /*
+        printf("rank : %i\n", rank);
+        printf("size : %i\n", size_th);
+        */
+        double prix_para = 0.0;
+        double ic_para = 0.0;
+        t3 = MPI_Wtime();
+        mCarlo->price(prix_para , ic_para, size_th, rank, precision);
+        t4 = MPI_Wtime();
+        if (rank == 0) {
+            printf("============== \nPrix mpi: %f \nIc mpi: %f \n ",  prix_para, ic_para);
+            printf("%f sec\n==============\n", t4-t3);
+        }
+        MPI_Finalize ();
+    }
 
-    MPI_Finalize ();
 
 
     //PnlMat *past = pnl_mat_create_from_scalar(1, size, 100);
