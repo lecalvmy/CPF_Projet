@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     t3 = clock();
     mCarlo->price(prix_para , ic_para, size_th, rank);
     t4 = clock();
-    printf("============== \nPrix: %f \nIc: %f \n", prix_para, ic);
+    printf("============== \nPrix: %f \nIc: %f \n", prix_para, ic_para);
     float diff2 ((float)t4-(float)t3);
     seconds = diff2 / CLOCKS_PER_SEC;
     printf("%f sec\n==============\n", seconds);
