@@ -11,6 +11,8 @@
 #include <time.h>
 #include "mpi.h"
 
+#include "pnl/pnl_finance.h"
+
 
 
 using namespace std;
@@ -79,13 +81,14 @@ int main(int argc, char **argv)
         opt = new BasketOption(T, timestep, size, payoff_coef, strike);
     } else if ( type == "performance"){
         opt = new PerformanceOption(T, timestep, size, payoff_coef);
+    }else if ( type == "call"){
+        opt = new CallOption(T, timestep, size, payoff_coef, strike);
     }
 
     PnlRng *rng= pnl_rng_create(PNL_RNG_MERSENNE);
 
 
     MonteCarlo *mCarlo = new MonteCarlo(bsmodel, opt, rng, fdStep, n_samples);
-
 /*
     double prix = 0.0;
     double ic = 0.0;
@@ -125,10 +128,10 @@ int main(int argc, char **argv)
         MPI_Init (&argc, &argv);
         MPI_Comm_size (MPI_COMM_WORLD, &size_th);
         MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-        /*
+/*
         printf("rank : %i\n", rank);
         printf("size : %i\n", size_th);
-        */
+*/
         double prix_para = 0.0;
         double nbSamplesNeeded = 0.0;
         double ic = 0.0;
