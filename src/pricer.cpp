@@ -19,6 +19,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    printf("argc = %i\n", argc );
+    printf("argv[0] = %s\n", argv[0] );
     clock_t t1, t2;
     double t3, t4;
     double fdStep = 0.1;
@@ -89,20 +91,24 @@ int main(int argc, char **argv)
 
 
     MonteCarlo *mCarlo = new MonteCarlo(bsmodel, opt, rng, fdStep, n_samples);
-/*
-    double prix = 0.0;
-    double ic = 0.0;
-    t1 = clock();
-    mCarlo->price(prix , ic);
-    t2 = clock();
-    printf("============== \nPrix: %f \nIc: %f \n", prix, ic);
-    float diff ((float)t2-(float)t1);
-    float seconds = diff / CLOCKS_PER_SEC;
-    printf("%f sec\n==============\n", seconds);
 
-*/
+
+
 
     if (argc == 2) {
+
+        
+        double prix = 0.0;
+        double ic = 0.0;
+        t1 = clock();
+        mCarlo->price(prix , ic);
+        t2 = clock();
+        printf("============== \nPrix sans parrallesisation: %f \nIc: %f \n", prix, ic);
+        float diff ((float)t2-(float)t1);
+        float seconds = diff / CLOCKS_PER_SEC;
+        printf("%f sec\n==============\n", seconds);
+
+
         int size_th, rank;
         MPI_Init (&argc, &argv);
         MPI_Comm_size (MPI_COMM_WORLD, &size_th);
