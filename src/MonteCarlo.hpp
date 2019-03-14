@@ -47,12 +47,10 @@ public:
 	 * @param[out] ic largeur de l'intervalle de confiance
 	 */
 	void price(double &prix, double &ic, int size, int rank);
-	void price_slave(int size, PnlMat *path, PnlRng *rng);
-	void price_master(double &prix, double &ic, int size,PnlMat *path, PnlRng *rng);
+	void price_slave(int size, PnlMat *path, PnlRng *rng, int nbSamples_slave);
+	void price_master(double &prix, double &esp_carre, int size,PnlMat *path, PnlRng *rng, int nbSamples_master);
 
-	void price(double &prix, double &ic, int size, int rank, double precision);
-	void price_slave_precision(int size, PnlMat *path, PnlRng *rng, double &prix_th_prec, double &esp_carre_th_prec);
-	void price_master_precision(double &prix, double &ic, int size,PnlMat *path, PnlRng *rng, double &prix_th_prec, double &esp_carre_th_prec , double precision, double nbIterations);
+	void price(double &prix, int size, int rank, double precision, double &nbSamplesNeeded);
 
 
 

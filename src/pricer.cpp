@@ -121,7 +121,6 @@ int main(int argc, char **argv)
     }
 
     else if (argc == 3) {
-        printf("precision : %f\n", precision);
         int size_th, rank;
         MPI_Init (&argc, &argv);
         MPI_Comm_size (MPI_COMM_WORLD, &size_th);
@@ -131,12 +130,12 @@ int main(int argc, char **argv)
         printf("size : %i\n", size_th);
         */
         double prix_para = 0.0;
-        double ic_para = 0.0;
+        double nbSamplesNeeded = 0.0;
         t3 = MPI_Wtime();
-        mCarlo->price(prix_para , ic_para, size_th, rank, precision);
+        mCarlo->price(prix_para, size_th, rank, precision, nbSamplesNeeded);
         t4 = MPI_Wtime();
-        if (rank == 0) {
-            printf("============== \nPrix mpi: %f \nIc mpi: %f \n ",  prix_para, ic_para);
+        if (rank==0) {
+            printf("============== \nPrix mpi: %f \nNombre samples: %f \n ", prix_para, nbSamplesNeeded);
             printf("%f sec\n==============\n", t4-t3);
         }
         MPI_Finalize ();
