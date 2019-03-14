@@ -28,7 +28,7 @@ MonteCarlo::MonteCarlo(Model *mod, Option *opt, PnlRng *rng, double fdStep, int 
 void MonteCarlo::price(double &prix, double &ic) {
 
 	double payoff;
-	prix = 0;
+	prix =  0;
 	double esp_carre = 0;
 
 	pnl_rng_init(rng_, PNL_RNG_MERSENNE);
@@ -48,6 +48,15 @@ void MonteCarlo::price(double &prix, double &ic) {
 
 	pnl_mat_free(&path);
 }
+
+/**
+ * Calcule le prix de l'option à la date 0 version parallele
+ *
+ * param[in] size : nb threads
+ * param[in] rank : rang du thread
+ * @param[out] prix valeur de l'estimateur Monte Carlo
+ * @param[out] ic largeur de l'intervalle de confiance
+ */
 
 void MonteCarlo::price(double &prix, double &ic, int size, int rank){
 	prix = 0;
@@ -79,6 +88,15 @@ void MonteCarlo::price(double &prix, double &ic, int size, int rank){
 	pnl_mat_free(&path);
 }
 
+/**
+ * Calcule la somme des payoff et la somme des payoff au carré pour les processus esclaves
+ * et les envoie au processus mettre
+ *
+ * param[in] size : nb threads
+ * param[in] path : la trajectoire générée
+ * param[in] rng : pointeur sur le générateur de nombre aléatoire
+ * param[in] nbSamples_slave : le nombre de fois qu'il faire la simulation
+ */
 
 void MonteCarlo::price_slave(int size, PnlMat *path, PnlRng *rng, int nbSamples_slave){
 
@@ -95,11 +113,21 @@ void MonteCarlo::price_slave(int size, PnlMat *path, PnlRng *rng, int nbSamples_
 	MPI_Send(&esp_carre_th,1,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
 }
 
+/**
+ * Calcule la somme des payoff et la somme des payoff au carré de tous les processus
+ *
+ * @param[out] prix il s'agit de la somme des payoffs
+ * @param[out] esp_carre il s'agit de la somme des payoffs au carré
+ * param[in] size : nb threads
+ * param[in] path : la trajectoire générée
+ * param[in] rng : pointeur sur le générateur de nombre aléatoire
+ * param[in] nbSamples_master : le nombre de fois qu'il faire la simulation
+ */
+
+
 void MonteCarlo::price_master(double &prix, double &esp_carre, int size,PnlMat *path, PnlRng *rng, int nbSamples_master){
 
-	double prix_th ;
-	double esp_carre_th ;
-	double payoff ;
+	double prix_th, esp_carre_th, payoff ;
 
 	for (int j = 0; j < nbSamples_master; ++j) {
 		mod_->asset(path, opt_->T_, opt_->nbTimeSteps_, rng);
@@ -108,7 +136,7 @@ void MonteCarlo::price_master(double &prix, double &esp_carre, int size,PnlMat *
 		esp_carre += (payoff * payoff);
 	}
 
-	for(int i=0; i<size-1; ++i){
+	for(int i=1; i<size; ++i){
 		MPI_Recv(&prix_th,1,MPI_DOUBLE,MPI_ANY_SOURCE, 1,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		prix += prix_th;
 		MPI_Recv(&esp_carre_th,1,MPI_DOUBLE,MPI_ANY_SOURCE, 2,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -116,7 +144,17 @@ void MonteCarlo::price_master(double &prix, double &esp_carre, int size,PnlMat *
 	}
 }
 
-void MonteCarlo::price(double &prix, int size, int rank, double precision, double &nbSamplesNeeded){
+/**
+ * Calcule le nombre de tour que le programme doit faire
+ *
+ * @param[out] prix valeur de l'estimateur Monte Carlo
+ * param[in] size : nb threads
+ * param[in] rank : le rank du thread
+ * param[in] precision : L'écart type souhaité
+ * @param[out] nbSamplesNeeded:  Calcule le nombre de tour que le programme doit faire
+ */
+
+void MonteCarlo::price(double &prix, int size, int rank, double precision, double &nbSamplesNeeded, double &ictheorique){
 
 	PnlRng *rng = pnl_rng_dcmt_create_id(rank, 1234);
 	pnl_rng_sseed(rng, time(NULL));
@@ -124,41 +162,32 @@ void MonteCarlo::price(double &prix, int size, int rank, double precision, doubl
 	PnlMat *path = pnl_mat_create(opt_->nbTimeSteps_ + 1, mod_->size_);
 	pnl_mat_set_row(path, mod_->spot_, 0);
 
-	int nbSamples = 0;
+	nbSamplesNeeded = 0;
+	double sumPayoff = 0;
 	double esp_carre = 0;
-	double prix_th_prec = 0.0;
-	double esp_carre_th_prec = 0.0;
-	bool again = true;
-	double prix_opt ;
 	double estimateur_carre;
-
-	double ic;
+	//double ic;
 	do {
 		if (rank == 0)
 		{
-			price_master(prix, esp_carre, size, path, rng, 1);
-			nbSamples += size;
-			estimateur_carre = exp(-2 * mod_->r_*opt_->T_)*(esp_carre / nbSamples - (prix/nbSamples)*(prix/nbSamples));
-			prix_opt = prix/nbSamples;
-			prix_opt *= exp(-mod_->r_*opt_->T_);
-			ic = 1.96 * sqrt(estimateur_carre / nbSamples);
-			//printf("ic master : %f\n", ic);
+			price_master(sumPayoff, esp_carre, size, path, rng, 1);
+			nbSamplesNeeded += size;
+			double meanPrice = sumPayoff/nbSamplesNeeded;
+			estimateur_carre = exp(-2 * mod_->r_*opt_->T_)*(esp_carre / nbSamplesNeeded - meanPrice*meanPrice);
+			prix = exp(-mod_->r_*opt_->T_) * meanPrice;
+			ictheorique = 1.96 * sqrt(estimateur_carre / nbSamplesNeeded);
 			for(int i = 1; i < size; ++i){
-				MPI_Send(&ic, 1, MPI_DOUBLE, i, 3, MPI_COMM_WORLD);
+				MPI_Send(&ictheorique, 1, MPI_DOUBLE, i, 3, MPI_COMM_WORLD);
 			}
 		}
 		else if(rank != 0)
 		{
 			price_slave(size, path, rng, 1);
-			double ic_master;
-			MPI_Recv(&ic_master, 1, MPI_DOUBLE, MPI_ANY_SOURCE, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-			ic = ic_master;
-			printf("icSlave: %f\n", ic_master);
+			MPI_Recv(&ictheorique, 1, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		}
-	} while(ic > precision);
-	//printf("Nb samples = %i\n", nbSamples);
-	nbSamplesNeeded = nbSamples;
-	prix = prix_opt;
+
+	  MPI_Barrier(MPI_COMM_WORLD);
+	} while(ictheorique > precision);
 	pnl_rng_free(&rng);
 	pnl_mat_free(&path);
 }

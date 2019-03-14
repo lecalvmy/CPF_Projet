@@ -47,10 +47,43 @@ public:
 	 * @param[out] ic largeur de l'intervalle de confiance
 	 */
 	void price(double &prix, double &ic, int size, int rank);
+
+	/**
+	 * Calcule la somme des payoff et la somme des payoff au carré pour les processus esclaves
+	 * et les envoie au processus mettre
+	 *
+	 * param[in] size : nb threads
+	 * param[in] path : la trajectoire générée
+	 * param[in] rng : pointeur sur le générateur de nombre aléatoire
+ 	 * param[in] nbSamples_slave : le nombre de fois qu'il faire la simulation
+	 */
+
 	void price_slave(int size, PnlMat *path, PnlRng *rng, int nbSamples_slave);
+
+	/**
+	 * Calcule la somme des payoff et la somme des payoff au carré de tous les processus
+	 *
+	 * @param[out] prix il s'agit de la somme des payoffs
+	 * @param[out] esp_carre il s'agit de la somme des payoffs au carré
+	 * param[in] size : nb threads
+	 * param[in] path : la trajectoire générée
+	 * param[in] rng : pointeur sur le générateur de nombre aléatoire
+ 	 * param[in] nbSamples_master : le nombre de fois qu'il faire la simulation
+	 */
+
 	void price_master(double &prix, double &esp_carre, int size,PnlMat *path, PnlRng *rng, int nbSamples_master);
 
-	void price(double &prix, int size, int rank, double precision, double &nbSamplesNeeded);
+	/**
+	 * Calcule le nombre de tour que le programme doit faire
+	 *
+	 * @param[out] prix valeur de l'estimateur Monte Carlo
+	 * param[in] size : nb threads
+	 * param[in] rank : le rank du thread
+	 * param[in] precision : L'écart type souhaité
+	 * @param[out] nbSamplesNeeded:  Calcule le nombre de tour que le programme doit faire
+	 */
+
+	void price(double &prix, int size, int rank, double precision, double &nbSamplesNeeded, double &ictheorique);
 
 
 

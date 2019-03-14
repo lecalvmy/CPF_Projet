@@ -131,11 +131,12 @@ int main(int argc, char **argv)
         */
         double prix_para = 0.0;
         double nbSamplesNeeded = 0.0;
+        double ic = 0.0;
         t3 = MPI_Wtime();
-        mCarlo->price(prix_para, size_th, rank, precision, nbSamplesNeeded);
+        mCarlo->price(prix_para, size_th, rank, precision, nbSamplesNeeded, ic);
         t4 = MPI_Wtime();
         if (rank==0) {
-            printf("============== \nPrix mpi: %f \nNombre samples: %f \n ", prix_para, nbSamplesNeeded);
+            printf("============== \nPrix mpi: %f \nNombre samples: %f \n  ic trouve : %f\n", prix_para, nbSamplesNeeded, ic);
             printf("%f sec\n==============\n", t4-t3);
         }
         MPI_Finalize ();
