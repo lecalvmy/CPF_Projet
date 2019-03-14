@@ -19,8 +19,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    printf("argc = %i\n", argc );
-    printf("argv[0] = %s\n", argv[0] );
     clock_t t1, t2;
     double t3, t4;
     double fdStep = 0.1;
@@ -97,7 +95,7 @@ int main(int argc, char **argv)
 
     if (argc == 2) {
 
-        
+
         double prix = 0.0;
         double ic = 0.0;
         t1 = clock();
